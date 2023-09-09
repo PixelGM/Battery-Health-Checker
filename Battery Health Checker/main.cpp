@@ -9,32 +9,32 @@ int getBatteryPercentage() {
     return sps.BatteryLifePercent;
 }
 
-// Function to calculate mAh lost per minute
-double calculateMahLostPerMinute(int initialPercentage, int currentPercentage, int batteryCapacity) {
-    return (initialPercentage - currentPercentage) * batteryCapacity / 100.0;
+// Function to calculate Wh lost per minute
+double calculateWhLostPerMinute(int initialPercentage, int currentPercentage, int batteryCapacityWh) {
+    return (initialPercentage - currentPercentage) * batteryCapacityWh / 100.0;
 }
 
 // Function to predict projected battery loss
-double predictBatteryLoss(int currentPercentage, double mahLostPerMinute) {
-    return currentPercentage * mahLostPerMinute;
+double predictBatteryLoss(int currentPercentage, double whLostPerMinute) {
+    return currentPercentage * whLostPerMinute;
 }
 
 // Function to determine battery health
-double determineBatteryHealth(double mahLostPerMinute, int factoryStandard) {
-    return (mahLostPerMinute / factoryStandard) * 100;
+double determineBatteryHealth(double whLostPerMinute, int factoryStandardWh) {
+    return (whLostPerMinute / factoryStandardWh) * 100;
 }
 
 int main() {
-    const int factoryStandard = 5000; // Assuming 5000mAh as the factory standard for a new laptop
+    const int factoryStandardWh = 50; // Assuming 50Wh as the factory standard for a new laptop
     int initialPercentage = getBatteryPercentage();
     Sleep(60000); // Wait for 1 minute
     int currentPercentage = getBatteryPercentage();
 
-    double mahLostPerMinute = calculateMahLostPerMinute(initialPercentage, currentPercentage, factoryStandard);
-    double projectedLoss = predictBatteryLoss(currentPercentage, mahLostPerMinute);
-    double batteryHealth = determineBatteryHealth(mahLostPerMinute, factoryStandard);
+    double whLostPerMinute = calculateWhLostPerMinute(initialPercentage, currentPercentage, factoryStandardWh);
+    double projectedLoss = predictBatteryLoss(currentPercentage, whLostPerMinute);
+    double batteryHealth = determineBatteryHealth(whLostPerMinute, factoryStandardWh);
 
-    std::cout << "mAh lost per minute: " << mahLostPerMinute << std::endl;
+    std::cout << "Wh lost per minute: " << whLostPerMinute << std::endl;
     std::cout << "Projected battery loss: " << projectedLoss << std::endl;
     std::cout << "Battery health: " << batteryHealth << "%" << std::endl;
 
